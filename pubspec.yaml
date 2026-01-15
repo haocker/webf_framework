@@ -9,7 +9,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  webf: ^0.16.3+1
+  webf: ^0.23.10
 
 dev_dependencies:
   flutter_test:
