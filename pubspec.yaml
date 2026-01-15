@@ -9,10 +9,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  webf:
-    git:
-      url: https://github.com/openwebf/webf.git
-      ref: main
+  webf: ^0.18.0
 
 dev_dependencies:
   flutter_test:
