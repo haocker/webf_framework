@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:webf/webf.dart';
 
 void main() {
@@ -60,9 +61,10 @@ class _WebFPageState extends State<WebFPage> {
           ),
         ],
       ),
-      body: _currentView == 'file'
-          ? WebF(bundle: WebFBundle.fromUrl('assets:///assets/index.html'))
-          : WebF(bundle: WebFBundle.fromContent('''
+      body: FutureBuilder<String>(
+        future: _currentView == 'file'
+            ? rootBundle.loadString('assets/index.html')
+            : Future.value('''
               <!DOCTYPE html>
               <html>
               <head>
@@ -112,7 +114,21 @@ class _WebFPageState extends State<WebFPage> {
                 </div>
               </body>
               </html>
-            ''')),
+            '''),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          }
+          return WebF(
+            viewportWidth: window.physicalSize.width / window.devicePixelRatio,
+            viewportHeight: window.physicalSize.height / window.devicePixelRatio,
+            bundle: WebFBundle.fromContent(snapshot.data!),
+          );
+        },
+      ),
     );
   }
 }
