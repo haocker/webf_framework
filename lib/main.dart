@@ -34,6 +34,9 @@ class _WebFPageState extends State<WebFPage> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final pixelRatio = MediaQuery.of(context).devicePixelRatio;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('WebF Demo'),
@@ -123,8 +126,8 @@ class _WebFPageState extends State<WebFPage> {
             return Center(child: Text('Error: ${snapshot.error}'));
           }
           return WebF(
-            viewportWidth: window.physicalSize.width / window.devicePixelRatio,
-            viewportHeight: window.physicalSize.height / window.devicePixelRatio,
+            viewportWidth: size.width,
+            viewportHeight: size.height,
             bundle: WebFBundle.fromContent(snapshot.data!),
           );
         },
